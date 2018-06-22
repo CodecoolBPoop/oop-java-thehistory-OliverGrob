@@ -55,7 +55,7 @@ public class TheHistoryLinkedList implements TheHistory {
         ListIterator<String> listIterator = wordsLinkedList.listIterator();
         boolean isMatching;
         // If we moved x times forward the iterator but no match was found we need to set it back to x-1 position
-        // because if not we will miss (step through) element which could be good
+        // because if not we will miss (step through) elements which could be match
         int listIteratorSetBack;
 
         while (listIterator.hasNext()) {
