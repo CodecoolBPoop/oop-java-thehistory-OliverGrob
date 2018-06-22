@@ -1,9 +1,6 @@
 package com.codecool.thehistory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class TheHistoryArrayList implements TheHistory {
     /**
@@ -13,33 +10,128 @@ public class TheHistoryArrayList implements TheHistory {
 
     @Override
     public void add(String text) {
-        //TODO: check the TheHistory interface for more information
+        for (String word : text.split(" ")) {
+            wordsArrayList.add(word);
+        }
+
+        // Other solution
+//        wordsArrayList.addAll(Arrays.asList(text.split(" ")))
     }
 
     @Override
     public void removeWord(String wordToBeRemoved) {
-        //TODO: check the TheHistory interface for more information
+
+        // Using same solution as in SimpleArray
+        // Getting the new array's length
+        int updatedArrayListLength = wordsArrayList.size();
+        for (String word : wordsArrayList) {
+            if (word.equals(wordToBeRemoved)) {
+
+                // This solution takes way longer, but its way more accurate
+//            if (word.toLowerCase().replaceAll("[,.!?]", "").equals(wordToBeRemoved.toLowerCase())) {
+
+                updatedArrayListLength--;
+            }
+        }
+
+        List<String> updatedArrayList = new ArrayList<String>(updatedArrayListLength);
+
+        // Rewriting the elements to the updated array
+        for (int i = 0; i < wordsArrayList.size(); i++) {
+            if (!wordsArrayList.get(i).equals(wordToBeRemoved)) {
+
+                // This solution takes way longer, but its way more accurate
+//            if (!wordsArray[i].toLowerCase().replaceAll("[,.!?]", "").equals(wordToBeRemoved.toLowerCase())) {
+
+                updatedArrayList.add(wordsArrayList.get(i));
+            }
+        }
+
+        // Replacing old array with the new one
+        wordsArrayList = updatedArrayList;
     }
 
     @Override
     public int size() {
-        //TODO: check the TheHistory interface for more information
-        return 0;
+        return wordsArrayList.size();
     }
 
     @Override
     public void clear() {
-        //TODO: check the TheHistory interface for more information
+        wordsArrayList.clear();
     }
 
     @Override
     public void replaceOneWord(String from, String to) {
-        //TODO: check the TheHistory interface for more information
+        for (int i = 0; i < wordsArrayList.size(); i++) {
+            if (wordsArrayList.get(i).equals(from)) {
+                wordsArrayList.set(i, to);
+            }
+        }
     }
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
-        //TODO: check the TheHistory interface for more information
+        // Getting the updated array's length
+        boolean isMatching;
+        int updatedArrayLength = 0;
+
+        for (int i = 0; i < wordsArrayList.size(); i++) {
+            if (wordsArrayList.get(i).equals(fromWords[0])) {
+                isMatching = true;
+                // Checking if all following word is matching
+                for (int j = 0; j < fromWords.length; j++) {
+                    if ((i + j) >= wordsArrayList.size() || !wordsArrayList.get(i + j).equals(fromWords[j])) {
+                        isMatching = false;
+                        break;
+                    }
+                }
+                if (isMatching) {
+                    updatedArrayLength++;
+                }
+            }
+        }
+
+        // Creating updated array which will contain the 'toWords' as well (with the initial length we got before)
+        List<String> updatedArrayList = new ArrayList<String>(wordsArrayList.size() - (updatedArrayLength * fromWords.length) + (updatedArrayLength * toWords.length));
+        // Indexes in both arrays to monitor where to copy from
+        int originArrayListStartIndex = 0;
+
+        for (int i = 0; i < wordsArrayList.size(); i++) {
+            if (wordsArrayList.get(i).equals(fromWords[0])) {
+                isMatching = true;
+                // Checking if all following word is matching
+                for (int j = 0; j < fromWords.length; j++) {
+                    if ((i + j) >= wordsArrayList.size() || !wordsArrayList.get(i + j).equals(fromWords[j])) {
+                        isMatching = false;
+                        break;
+                    }
+                }
+                // If matching -> copying from wordsArray and from toWords
+                if (isMatching) {
+                    for (int j = 0; j < i - originArrayListStartIndex; j++) {
+                        updatedArrayList.add(wordsArrayList.get(originArrayListStartIndex + j));
+                    }
+
+                    for (int j = 0; j < toWords.length; j++) {
+                        updatedArrayList.add(toWords[j]);
+                    }
+//                    updatedArrayList.addAll(Arrays.asList(toWords));
+
+                    originArrayListStartIndex += (i - originArrayListStartIndex) + fromWords.length;
+                    i += fromWords.length - 1;
+                }
+            }
+        }
+
+        // If there is remaining items at the end
+        if (originArrayListStartIndex != wordsArrayList.size()) {
+            for (int j = originArrayListStartIndex; j < wordsArrayList.size(); j++) {
+                updatedArrayList.add(wordsArrayList.get(j));
+            }
+        }
+
+        wordsArrayList = updatedArrayList;
     }
 
     @Override
