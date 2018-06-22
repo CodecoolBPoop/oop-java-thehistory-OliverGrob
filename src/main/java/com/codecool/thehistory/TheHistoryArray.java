@@ -14,7 +14,7 @@ public class TheHistoryArray implements TheHistory {
         // Easier and faster solution
         wordsArray = text.split(" ");
 
-        // This solution takes way longer, but its way more accurate and also saves time later
+        // This solution takes way longer, but its way more accurate and also maybe saves time later
 //        wordsArray = text.replaceAll("\\n\\t|\\s{2,}", " ").trim().split(" ");
     }
 
@@ -78,7 +78,7 @@ public class TheHistoryArray implements TheHistory {
         for (int i = 0; i < wordsArray.length; i++) {
             if (wordsArray[i].equals(fromWords[0])) {
                 isMatching = true;
-                // Checking if all following word is matching
+                // Checking if all following words are matching
                 for (int j = 0; j < fromWords.length; j++) {
                     if ((i + j) >= wordsArray.length || !wordsArray[i + j].equals(fromWords[j])) {
                         isMatching = false;
@@ -100,7 +100,7 @@ public class TheHistoryArray implements TheHistory {
         for (int i = 0; i < wordsArray.length; i++) {
             if (wordsArray[i].equals(fromWords[0])) {
                 isMatching = true;
-                // Checking if all following word is matching
+                // Checking if all following words are matching
                 for (int j = 0; j < fromWords.length; j++) {
                     if ((i + j) >= wordsArray.length || !wordsArray[i + j].equals(fromWords[j])) {
                         isMatching = false;
@@ -121,7 +121,7 @@ public class TheHistoryArray implements TheHistory {
             }
         }
 
-        // If there is remaining items at the end
+        // If there are remaining items at the end, we copy them here
         if (originArrayStartIndex != wordsArray.length) {
             System.arraycopy(wordsArray, originArrayStartIndex, updatedArray, updatedArrayStartIndex, wordsArray.length - originArrayStartIndex);
         }

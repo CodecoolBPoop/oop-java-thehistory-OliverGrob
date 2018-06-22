@@ -14,7 +14,7 @@ public class TheHistoryArrayList implements TheHistory {
             wordsArrayList.add(word);
         }
 
-        // Other solution
+        // This solution takes way longer, but its way more accurate
 //        wordsArrayList.addAll(Arrays.asList(text.split(" ")))
     }
 
@@ -79,7 +79,7 @@ public class TheHistoryArrayList implements TheHistory {
         for (int i = 0; i < wordsArrayList.size(); i++) {
             if (wordsArrayList.get(i).equals(fromWords[0])) {
                 isMatching = true;
-                // Checking if all following word is matching
+                // Checking if all following words are matching
                 for (int j = 0; j < fromWords.length; j++) {
                     if ((i + j) >= wordsArrayList.size() || !wordsArrayList.get(i + j).equals(fromWords[j])) {
                         isMatching = false;
@@ -94,13 +94,13 @@ public class TheHistoryArrayList implements TheHistory {
 
         // Creating updated array which will contain the 'toWords' as well (with the initial length we got before)
         List<String> updatedArrayList = new ArrayList<String>(wordsArrayList.size() - (updatedArrayLength * fromWords.length) + (updatedArrayLength * toWords.length));
-        // Indexes in both arrays to monitor where to copy from
+        // Index in the array to monitor where to copy from
         int originArrayListStartIndex = 0;
 
         for (int i = 0; i < wordsArrayList.size(); i++) {
             if (wordsArrayList.get(i).equals(fromWords[0])) {
                 isMatching = true;
-                // Checking if all following word is matching
+                // Checking if all following words are matching
                 for (int j = 0; j < fromWords.length; j++) {
                     if ((i + j) >= wordsArrayList.size() || !wordsArrayList.get(i + j).equals(fromWords[j])) {
                         isMatching = false;
@@ -116,7 +116,6 @@ public class TheHistoryArrayList implements TheHistory {
                     for (int j = 0; j < toWords.length; j++) {
                         updatedArrayList.add(toWords[j]);
                     }
-//                    updatedArrayList.addAll(Arrays.asList(toWords));
 
                     originArrayListStartIndex += (i - originArrayListStartIndex) + fromWords.length;
                     i += fromWords.length - 1;
@@ -124,7 +123,7 @@ public class TheHistoryArrayList implements TheHistory {
             }
         }
 
-        // If there is remaining items at the end
+        // If there are remaining items at the end, we copy them here
         if (originArrayListStartIndex != wordsArrayList.size()) {
             for (int j = originArrayListStartIndex; j < wordsArrayList.size(); j++) {
                 updatedArrayList.add(wordsArrayList.get(j));
