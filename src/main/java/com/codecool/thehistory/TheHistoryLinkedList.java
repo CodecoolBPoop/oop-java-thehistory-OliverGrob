@@ -13,33 +13,103 @@ public class TheHistoryLinkedList implements TheHistory {
 
     @Override
     public void add(String text) {
-        //TODO: check the TheHistory interface for more information
+        for (String word : text.split(" ")) {
+            wordsLinkedList.add(word);
+        }
     }
 
     @Override
     public void removeWord(String wordToBeRemoved) {
-        //TODO: check the TheHistory interface for more information
+        ListIterator<String> listIterator = wordsLinkedList.listIterator();
+
+        while (listIterator.hasNext()) {
+            if (listIterator.next().equals(wordToBeRemoved)) {
+                listIterator.remove();
+            }
+        }
     }
 
     @Override
     public int size() {
-        //TODO: check the TheHistory interface for more information
-        return 0;
+        return wordsLinkedList.size();
     }
 
     @Override
     public void clear() {
-        //TODO: check the TheHistory interface for more information
+        wordsLinkedList.clear();
     }
 
     @Override
     public void replaceOneWord(String from, String to) {
-        //TODO: check the TheHistory interface for more information
+        ListIterator<String> listIterator = wordsLinkedList.listIterator();
+
+        while (listIterator.hasNext()) {
+            if (listIterator.next().equals(from)) {
+                listIterator.set(to);
+            }
+        }
     }
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
-        //TODO: check the TheHistory interface for more information
+        ListIterator<String> listIterator = wordsLinkedList.listIterator();
+        boolean isMatching;
+        // If we moved x times forward the iterator but no match was found we need to set it back to x-1 position
+        // because if not we will miss (step through) element which could be good
+        int listIteratorSetBack;
+
+        while (listIterator.hasNext()) {
+            if (listIterator.next().equals(fromWords[0])) {
+                isMatching = true;
+                listIteratorSetBack = 1;
+
+                for (int i = 1; i < fromWords.length; i++) {
+                    if (!listIterator.hasNext() || !listIterator.next().equals(fromWords[i])) {
+                        isMatching = false;
+                        break;
+                    }
+                    else {
+                        listIteratorSetBack++;
+                    }
+                }
+
+                if (isMatching) {
+                    // If match was found we go back where the match started to change the elements
+                    for (int i = 0; i < fromWords.length; i++) {
+                        listIterator.previous();
+                    }
+                    // Basic modification
+                    // Changing the elements what we can without adding/removing
+                    // (which already have a spot in the list)
+                    for (int i = 0; i < Math.min(fromWords.length, toWords.length); i++) {
+                        listIterator.next();
+                        listIterator.set(toWords[i]);
+                    }
+                    // Extra modifications (adding or removing elements)
+                    // If we need to remove elements, we remove them
+                    if (fromWords.length > toWords.length) {
+                        for (int i = 0; i < fromWords.length - toWords.length; i++) {
+                            listIterator.next();
+                            listIterator.remove();
+                        }
+                    }
+                    // Or if we need to add element, we add them
+                    else if (fromWords.length < toWords.length) {
+                        for (int i = 0; i < toWords.length - fromWords.length; i++) {
+                            listIterator.add(toWords[fromWords.length + i]);
+                        }
+                    }
+                }
+                // If no match was found we need to set the iterator back not to miss elements
+                else {
+                    if (listIterator.hasNext()) {
+                        for (int i = 0; i < listIteratorSetBack; i++) {
+                            listIterator.previous();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
