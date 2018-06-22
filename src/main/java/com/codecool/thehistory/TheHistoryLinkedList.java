@@ -63,6 +63,7 @@ public class TheHistoryLinkedList implements TheHistory {
                 isMatching = true;
                 listIteratorSetBack = 1;
 
+                // We can start from i = 1, because first equality was checked before
                 for (int i = 1; i < fromWords.length; i++) {
                     if (!listIterator.hasNext() || !listIterator.next().equals(fromWords[i])) {
                         isMatching = false;
@@ -78,22 +79,22 @@ public class TheHistoryLinkedList implements TheHistory {
                     for (int i = 0; i < fromWords.length; i++) {
                         listIterator.previous();
                     }
-                    // Basic modification
+                    // -------   Basic modification   -------
                     // Changing the elements what we can without adding/removing
                     // (which already have a spot in the list)
                     for (int i = 0; i < Math.min(fromWords.length, toWords.length); i++) {
                         listIterator.next();
                         listIterator.set(toWords[i]);
                     }
-                    // Extra modifications (adding or removing elements)
-                    // If we need to remove elements, we remove them
+                    // -------   Extra modifications (adding or removing elements)   -------
+                    // If we need to remove elements, we remove them here
                     if (fromWords.length > toWords.length) {
                         for (int i = 0; i < fromWords.length - toWords.length; i++) {
                             listIterator.next();
                             listIterator.remove();
                         }
                     }
-                    // Or if we need to add element, we add them
+                    // Or if we need to add elements, we add them here
                     else if (fromWords.length < toWords.length) {
                         for (int i = 0; i < toWords.length - fromWords.length; i++) {
                             listIterator.add(toWords[fromWords.length + i]);
